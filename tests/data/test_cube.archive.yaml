@@ -1,0 +1,3 @@
+data:
+  m_def: cube.schema_packages.cube.Cube
+  data_file: cube.dat
