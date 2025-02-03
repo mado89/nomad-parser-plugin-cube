@@ -1,7 +1,9 @@
-from typing import Dict
+import os
 
 from nomad.datamodel import EntryArchive
 from nomad.parsing import MatchingParser
+
+from cube.schema_packages.cube import Cube
 
 
 class CubeParser(MatchingParser):
@@ -13,18 +15,25 @@ class CubeParser(MatchingParser):
         decoded_buffer: str,
         compression: str = None,
     ):
-        is_mainfile_super = super().is_mainfile(filename, mime, buffer, decoded_buffer, compression)
-        print("CubeParser Hello", is_mainfile_super)
+        is_mainfile_super = super().is_mainfile(filename, mime, buffer, decoded_buffer,
+                                                 compression)
         if not is_mainfile_super:
             return False
-        return False
+        file = os.path.basename(filename)
+        #TODO: here could be more checks whether it is actually a correct cube.dat
+        return file == "cube.dat"
 
     def parse(
         self,
         mainfile: str,
         archive: EntryArchive,
         logger=None,
-        child_archives: Dict[str, EntryArchive] = None,
+        child_archives: dict[str, EntryArchive] = None,
     ) -> None:
-        print("Hello")
-        logger.info('MyParser called')
+        file = os.path.basename(mainfile)
+        # print("Hello", file, mainfile, archive, child_archives)
+        logger.info('CubeParser called')
+
+        entry = Cube(data_file=file)
+
+        archive.data = entry

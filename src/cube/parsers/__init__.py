@@ -7,13 +7,13 @@ class NewParserEntryPoint(ParserEntryPoint):
 
     def load(self):
         # from cube.parsers.cubeparser import CubeParser
-        from cube.parsers.parser import NewParser
+        from cube.parsers.cubeparser import CubeParser
 
-        return NewParser(**self.dict())
+        return CubeParser(**self.dict())
 
 
 parser_entry_point = NewParserEntryPoint(
     name='NewParser',
     description='New parser entry point configuration.',
-    mainfile_name_re='.*\.newmainfilename',
+    mainfile_name_re='.*\.dat',
 )
