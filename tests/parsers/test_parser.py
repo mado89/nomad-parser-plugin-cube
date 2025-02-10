@@ -2,12 +2,13 @@ import logging
 
 from nomad.datamodel import EntryArchive
 
-from cube.parsers.parser import NewParser
+from cube.parsers.cubeparser import CubeParser
+from cube.schema_packages.cube import Cube
 
 
 def test_parse_file():
-    parser = NewParser()
+    parser = CubeParser()
     archive = EntryArchive()
-    parser.parse('tests/data/example.out', archive, logging.getLogger())
+    parser.parse('tests/data/cube.dat', archive, logging.getLogger())
 
-    assert archive.workflow2.name == 'test'
+    assert isinstance(archive.data,Cube)
