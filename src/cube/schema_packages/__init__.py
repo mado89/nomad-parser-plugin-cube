@@ -13,3 +13,16 @@ cube = CubeEntryPoint(
     name='Cube',
     description='Schema package for describing a <please help me what it is>.',
 )
+
+class TmrEntryPoint(SchemaPackageEntryPoint):
+
+    def load(self):
+        from cube.schema_packages.tmrshape import m_package
+
+        return m_package
+
+
+tmr = TmrEntryPoint(
+    name='B4Vex Simulation',
+    description='Schema package for describing a B4Vex Simulation.',
+)

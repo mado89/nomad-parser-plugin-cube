@@ -113,6 +113,7 @@ where = ["src"]
 [project.entry-points.'nomad.plugin']
 parser_entry_point = "cube.parsers:parser_entry_point"
 cube = "cube.schema_packages:cube"
+tmr = "cube.schema_packages:tmr"
 
 
 
