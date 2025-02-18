@@ -341,6 +341,7 @@ class B4VexSimulation(Simulation, PlotSection, EntryData, ArchiveSection):
       self.readResult(archive)
     if self.config_file:
       self.readConfig(archive)
+      logger.info("Reading configuration from file done")
 
     # self.createFigures()
 
