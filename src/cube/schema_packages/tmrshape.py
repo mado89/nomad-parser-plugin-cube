@@ -76,6 +76,10 @@ class SimulationConfigShape(EntryData):
       ])
     )
   )
+  name = Quantity(
+      type=str,
+      description='Name',
+  )
 
 class EllipseConfig(SimulationConfigShape, EntryData):
   m_def= Section(
