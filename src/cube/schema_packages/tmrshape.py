@@ -138,7 +138,7 @@ class BoxConfig(SimulationConfigShape):
       description='Initial length x',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
       unit="nanometers",
   )
@@ -147,7 +147,7 @@ class BoxConfig(SimulationConfigShape):
       description='Initial length y',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
       unit="nanometers",
   )
@@ -156,7 +156,7 @@ class BoxConfig(SimulationConfigShape):
       description='Initial length z',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
       unit="nanometers",
   )
