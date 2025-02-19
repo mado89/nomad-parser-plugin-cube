@@ -48,13 +48,7 @@ if TYPE_CHECKING:
 m_package = Package(name='Schema for TMRB4Vex Simulation')
 
 
-class DatabaseConfig(EntryData):
-    # use_DB: bool
-    # read: bool
-    # write: bool
-    # name: str
-    # db_path: str
-    # postProc_global_path: str
+class DatabaseConfig(ArchiveSection):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -68,7 +62,7 @@ class DatabaseConfig(EntryData):
     )
   )
 
-class SimulationConfigShape(EntryData):
+class SimulationConfigShape(ArchiveSection):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -81,7 +75,7 @@ class SimulationConfigShape(EntryData):
       description='Name',
   )
 
-class EllipseConfig(SimulationConfigShape, EntryData):
+class EllipseConfig(SimulationConfigShape, ArchiveSection):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -119,7 +113,7 @@ class EllipseConfig(SimulationConfigShape, EntryData):
       # unit="celsius",
   )
 
-class BoxConfig(SimulationConfigShape, EntryData):
+class BoxConfig(SimulationConfigShape, ArchiveSection):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -157,7 +151,7 @@ class BoxConfig(SimulationConfigShape, EntryData):
       # unit="celsius",
   )
 
-class SimulationConfigSimulation(EntryData):
+class SimulationConfigSimulation(ArchiveSection):
   m_def = Section(
     a_eln=dict(
       properties=dict(order=[
@@ -193,7 +187,7 @@ class SimulationConfigSimulation(EntryData):
   # hfinal: float
   # hstep: float
 
-class ServerConfig(EntryData):
+class ServerConfig(ArchiveSection):
     # number_cores: int
     # mem_GB: int
     # gpu: str
@@ -207,7 +201,7 @@ class ServerConfig(EntryData):
     )
   )
 
-class GeneralSettingsConfig(EntryData):
+class GeneralSettingsConfig(ArchiveSection):
     # log_level: int
     # location: str
   m_def= Section(
@@ -219,7 +213,7 @@ class GeneralSettingsConfig(EntryData):
     )
   )
 
-class Optimizer(EntryData):
+class Optimizer(ArchiveSection):
     # acq_kind: str
     # kappa: float
     # xi: float
@@ -238,7 +232,7 @@ class Optimizer(EntryData):
   )
 
 
-class SimulationConfig(EntryData):
+class SimulationConfig(ArchiveSection):
   m_def = Section()
   database = SubSection(
     section_def=DatabaseConfig,
