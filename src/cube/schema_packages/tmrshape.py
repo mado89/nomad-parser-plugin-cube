@@ -36,6 +36,7 @@ from nomad.metainfo import (
   Section,
   SubSection,
 )
+from nomad.units import ureg
 
 if TYPE_CHECKING:
   from nomad.datamodel.datamodel import (
@@ -75,7 +76,10 @@ class SimulationConfigShape(ArchiveSection):
       description='Name',
   )
 
-class EllipseConfig(SimulationConfigShape, ArchiveSection):
+  def setFromDict(self, _dict: dict) -> None:
+    self.name = _dict['name']
+
+class EllipseConfig(SimulationConfigShape):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -90,30 +94,36 @@ class EllipseConfig(SimulationConfigShape, ArchiveSection):
       description='Radius 1',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
   init_r2 = Quantity(
       type=np.float64,
       description='Radius 2',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
   init_h = Quantity(
       type=np.float64,
       description='Height',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
 
-class BoxConfig(SimulationConfigShape, ArchiveSection):
+  def setFromDict(self, _dict:dict) -> None:
+    super().setFromDict(_dict)
+    self.init_r1 = ureg.Quantity(float(_dict['init_r1']), 'nanometers')
+    self.init_r2 = ureg.Quantity(float(_dict['init_r2']), 'nanometers')
+    self.init_h = ureg.Quantity(float(_dict['init_h']), 'nanometers')
+
+class BoxConfig(SimulationConfigShape):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
@@ -128,28 +138,34 @@ class BoxConfig(SimulationConfigShape, ArchiveSection):
       description='Initial length x',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
   init_ylen = Quantity(
       type=np.float64,
       description='Initial length y',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
   init_zlen = Quantity(
       type=np.float64,
       description='Initial length z',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometer"
+          "defaultDisplayUnit": "nanometers"
       },
-      # unit="celsius",
+      unit="nanometers",
   )
+
+  def setFromDict(self, _dict:dict) -> None:
+    super().setFromDict(_dict)
+    self.init_xlen = ureg.Quantity(float(_dict['init_xlen']), 'nanometers')
+    self.init_ylen = ureg.Quantity(float(_dict['init_ylen']), 'nanometers')
+    self.init_zlen = ureg.Quantity(float(_dict['init_zlen']), 'nanometers')
 
 class SimulationConfigSimulation(ArchiveSection):
   m_def = Section(
@@ -359,8 +375,7 @@ class B4VexSimulation(Simulation, PlotSection, EntryData, ArchiveSection):
 
       for key in config_data['database']:
         setattr(config.database, key, config_data['database'][key])
-      for key in config_data['shape']:
-        setattr(config.shape, key, config_data['shape'][key])
+      config.shape.setFromDict(config_data['shape'])
       for key in config_data['simulation']:
         setattr(config.simulation, key, config_data['simulation'][key])
       for key in config_data['database']:
