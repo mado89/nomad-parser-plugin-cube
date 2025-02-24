@@ -112,34 +112,34 @@ class EllipseConfig(SimulationConfigShape):
       description='Radius 1',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
   init_r2 = Quantity(
       type=np.float64,
       description='Radius 2',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
   init_h = Quantity(
       type=np.float64,
       description='Height',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
 
   def setFromDict(self, _dict:dict) -> None:
     super().setFromDict(_dict)
-    self.init_r1 = ureg.Quantity(float(_dict['init_r1']), 'm^-9')
-    self.init_r2 = ureg.Quantity(float(_dict['init_r2']), 'm^-9')
-    self.init_h = ureg.Quantity(float(_dict['init_h']), 'm^-9')
+    self.init_r1 = ureg.Quantity(float(_dict['init_r1']), 'nm')
+    self.init_r2 = ureg.Quantity(float(_dict['init_r2']), 'nm')
+    self.init_h = ureg.Quantity(float(_dict['init_h']), 'nm')
 
 class BoxConfig(SimulationConfigShape):
   m_def= Section(
@@ -156,34 +156,34 @@ class BoxConfig(SimulationConfigShape):
       description='Initial length x',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
   init_ylen = Quantity(
       type=np.float64,
       description='Initial length y',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
   init_zlen = Quantity(
       type=np.float64,
       description='Initial length z',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "m^-9"
+          "defaultDisplayUnit": "nm"
       },
-      unit="m^-9",
+      unit="nm",
   )
 
   def setFromDict(self, _dict:dict) -> None:
     super().setFromDict(_dict)
-    self.init_xlen = ureg.Quantity(float(_dict['init_xlen']), 'm^-9')
-    self.init_ylen = ureg.Quantity(float(_dict['init_ylen']), 'm^-9')
-    self.init_zlen = ureg.Quantity(float(_dict['init_zlen']), 'm^-9')
+    self.init_xlen = ureg.Quantity(float(_dict['init_xlen']), 'nm')
+    self.init_ylen = ureg.Quantity(float(_dict['init_ylen']), 'nm')
+    self.init_zlen = ureg.Quantity(float(_dict['init_zlen']), 'nm')
 
 class SimulationConfigSimulation(ArchiveSection):
   m_def = Section(
