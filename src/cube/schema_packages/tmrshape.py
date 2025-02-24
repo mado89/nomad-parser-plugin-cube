@@ -62,6 +62,24 @@ class DatabaseConfig(ArchiveSection):
       ])
     )
   )
+  use_DB = Quantity(
+      type=bool,
+  )
+  read = Quantity(
+      type=bool,
+  )
+  write = Quantity(
+      type=bool,
+  )
+  name = Quantity(
+      type=str,
+  )
+  db_path = Quantity(
+      type=str,
+  )
+  postProc_global_path = Quantity(
+      type=str,
+  )
 
 class SimulationConfigShape(ArchiveSection):
   m_def= Section(
@@ -94,34 +112,34 @@ class EllipseConfig(SimulationConfigShape):
       description='Radius 1',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
   init_r2 = Quantity(
       type=np.float64,
       description='Radius 2',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
   init_h = Quantity(
       type=np.float64,
       description='Height',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
 
   def setFromDict(self, _dict:dict) -> None:
     super().setFromDict(_dict)
-    self.init_r1 = ureg.Quantity(float(_dict['init_r1']), 'nanometers')
-    self.init_r2 = ureg.Quantity(float(_dict['init_r2']), 'nanometers')
-    self.init_h = ureg.Quantity(float(_dict['init_h']), 'nanometers')
+    self.init_r1 = ureg.Quantity(float(_dict['init_r1']), 'm^-9')
+    self.init_r2 = ureg.Quantity(float(_dict['init_r2']), 'm^-9')
+    self.init_h = ureg.Quantity(float(_dict['init_h']), 'm^-9')
 
 class BoxConfig(SimulationConfigShape):
   m_def= Section(
@@ -138,34 +156,34 @@ class BoxConfig(SimulationConfigShape):
       description='Initial length x',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
   init_ylen = Quantity(
       type=np.float64,
       description='Initial length y',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
   init_zlen = Quantity(
       type=np.float64,
       description='Initial length z',
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "nanometers"
+          "defaultDisplayUnit": "m^-9"
       },
-      unit="nanometers",
+      unit="m^-9",
   )
 
   def setFromDict(self, _dict:dict) -> None:
     super().setFromDict(_dict)
-    self.init_xlen = ureg.Quantity(float(_dict['init_xlen']), 'nanometers')
-    self.init_ylen = ureg.Quantity(float(_dict['init_ylen']), 'nanometers')
-    self.init_zlen = ureg.Quantity(float(_dict['init_zlen']), 'nanometers')
+    self.init_xlen = ureg.Quantity(float(_dict['init_xlen']), 'm^-9')
+    self.init_ylen = ureg.Quantity(float(_dict['init_ylen']), 'm^-9')
+    self.init_zlen = ureg.Quantity(float(_dict['init_zlen']), 'm^-9')
 
 class SimulationConfigSimulation(ArchiveSection):
   m_def = Section(
@@ -245,6 +263,21 @@ class Optimizer(ArchiveSection):
         'kappa_decay_delay',
       ])
     )
+  )
+  acq_kind = Quantity(
+      type=str
+  )
+  kappa = Quantity(
+      type=np.float64
+  )
+  xi = Quantity(
+      type=np.float64
+  )
+  kappa_decay = Quantity(
+      type=np.float64
+  )
+  kappa_decay_delay = Quantity(
+      type=int
   )
 
 
@@ -357,7 +390,7 @@ class B4VexSimulation(Simulation, PlotSection, EntryData, ArchiveSection):
       self.readConfig(archive)
       logger.info("Reading configuration from file done")
 
-    # self.createFigures()
+    self.createFigures()
 
   def readConfig(self, archive: 'EntryArchive'):
     with archive.m_context.raw_file(self.config_file) as file:
@@ -378,11 +411,15 @@ class B4VexSimulation(Simulation, PlotSection, EntryData, ArchiveSection):
       config.shape.setFromDict(config_data['shape'])
       for key in config_data['simulation']:
         setattr(config.simulation, key, config_data['simulation'][key])
-      for key in config_data['database']:
-        setattr(config.database, key, config_data['database'][key])
+      for key in config_data['server']:
+        setattr(config.server, key, config_data['server'][key])
+      for key in config_data['generalSettings']:
+        setattr(config.generalSettings, key, config_data['generalSettings'][key])
+      for key in config_data['optimizer']:
+        setattr(config.optimizer, key, config_data['optimizer'][key])
 
       self.configuration = config
-      print(f"Config {config}")
+      # print(f"Config {config}")
 
   def readResult(self, archive: 'EntryArchive'):
     steps = []
@@ -396,7 +433,9 @@ class B4VexSimulation(Simulation, PlotSection, EntryData, ArchiveSection):
       steps.append(step)
     self.steps = steps
 
-  def createFigures(self):
+  def createFigures(self) -> None:
+    if len(self.steps) == 0:
+      return
     x = [s.H_ex for s in self.steps]
     y = [s.M for s in self.steps]
     figure2 = px.scatter(x=x, y=y, 
