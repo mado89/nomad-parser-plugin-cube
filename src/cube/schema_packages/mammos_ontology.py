@@ -5,6 +5,7 @@ from typing import (
 import numpy as np
 from nomad.datamodel.data import (
   ArchiveSection,
+  EntryData,
 )
 from nomad.metainfo import (
   Quantity,
@@ -14,6 +15,11 @@ from nomad.metainfo import (
 
 if TYPE_CHECKING:
   pass
+
+
+# m_package = Package(name='Schema for TMRB4Vex Simulation')
+# m_package.__init_metainfo__()
+
 
 def Length():
   return Quantity(
@@ -261,7 +267,7 @@ Subclass of:
       }
   )
 
-class CrystalStructure(ArchiveSection):
+class CrystalStructure(EntryData, ArchiveSection):
   """
   CrystalStructure
 
