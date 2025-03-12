@@ -15,7 +15,12 @@ from nomad.metainfo import (
 )
 
 if TYPE_CHECKING:
-  pass
+  from nomad.datamodel.datamodel import (
+      EntryArchive,
+  )
+  from structlog.stdlib import (
+      BoundLogger,
+  )
 
 m_package = Package(name='Schema for Mammos')
 m_package.__init_metainfo__()
@@ -326,3 +331,14 @@ Subclass of:
     section_def=LatticeConstantBeta,
     repeats = False,
   )
+
+  def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+    '''
+    The normalizer for the `B4VexSimulation` class.
+
+    Args:
+        archive (EntryArchive): The archive containing the section that is being
+        normalized.
+        logger (BoundLogger): A structlog logger.
+    '''
+    super().normalize(archive, logger)
