@@ -283,7 +283,10 @@ class UUParser(MatchingParser):
         fx = data_dir_GS + "x/out_MF_x"
         fy = data_dir_GS + "y/out_MF_y"
         fz = data_dir_GS + "z/out_MF_z"
-        fol = file_Name_Ms
+        fx = "GS/x/out_MF_x"
+        fy = "GS/y/out_MF_y"
+        fz = "GS/z/out_MF_z"
+        fol = f"GS/{xyz_dirs[0]}/out_last"
         # print("Hello", file, mainfile, archive, child_archives)
         logger.info('CubeParser called')
 
