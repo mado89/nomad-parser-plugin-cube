@@ -127,11 +127,73 @@ def lastThingy(lines, valname,verbose=False):
       last_lines_with_valname[key] = value
   return last_lines_with_valname
 
+class GroundState(ArchiveSection):
+  m_def = Section()
+  out_MF_x = Quantity(
+    type=str,
+    description='The \'out_MF_x\' file.',
+    a_eln={
+        "component": "FileEditQuantity",
+    },
+  )
+  out_MF_y = Quantity(
+    type=str,
+    description='The \'out_MF_y\' file.',
+    a_eln={
+        "component": "FileEditQuantity",
+    },
+  )
+  out_MF_z = Quantity(
+    type=str,
+    description='The \'out_MF_z\' file.',
+    a_eln={
+        "component": "FileEditQuantity",
+    },
+  )
+
+  def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+    '''
+    The normalizer for the `UU data`.
+
+    Args:
+        archive (EntryArchive): The archive containing the section that is being
+        normalized.
+        logger (BoundLogger): A structlog logger.
+    '''
+    super().normalize(archive, logger)
+
+    energies = {}
+    if self.out_MF_x and self.out_MF_y and self.out_MF_z:
+      with archive.m_context.raw_file(self.out_MF_x) as file:
+        lines = file.read().splitlines()
+
+      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+      energies['x'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+
+      with archive.m_context.raw_file(self.out_MF_y) as file:
+        lines = file.read().splitlines()
+
+      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+      energies['y'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+
+      with archive.m_context.raw_file(self.out_MF_z) as file:
+        lines = file.read().splitlines()
+
+      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+      energies['z'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+
+    self.energies = energies
+
 class UUData(EntryData, ArchiveSection):
   m_def = Section()
 
   k1 = SubSection(
     section_def=MagnetocrystallineAnisotropyConstantK1,
+    repeats = False,
+  )
+
+  groundState = SubSection(
+    section_def=GroundState,
     repeats = False,
   )
 
@@ -154,7 +216,7 @@ class UUData(EntryData, ArchiveSection):
     '''
     super().normalize(archive, logger)
 
-    if self.out_last_file:
+    if self.out_last_file and self.groundState and self.groundState.energies != {}:
       with archive.m_context.raw_file(self.out_last_file) as file:
         lines = file.read().splitlines()
 
@@ -164,33 +226,18 @@ class UUData(EntryData, ArchiveSection):
       magnetization_in_T, ucvA = compute_magnetization(tot_moments_D, dir_of_JD, lines)
       #print(f'Magnetization Ms: {magnetization_in_T} T')
 
-      K1_in_JPerCubibm = self.compute_anisotropy_constant(ucvA)
+      K1_in_JPerCubibm = self.compute_anisotropy_constant(ucvA, self.groundState.energies)
       print(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
 
-  def compute_anisotropy_constant(self, ucvA):
-    energies = {}
+  def compute_anisotropy_constant(self, ucvA, energies):
+    allKs = list()
+    if 'z' in energies.keys():
+        if 'x' in energies.keys():
+            Kxz = (energies['x'] - energies['z'])/ucvA*2179874
+            allKs.append(Kxz)
+        if 'y' in energies.keys():
+            Kyz = (energies['y'] - energies['z'])/ucvA*2179874
+            allKs.append(Kyz)
 
-    # if f'out_MF_{xyz_dirs[0]}' in os.listdir(data_dir_GS+f'/{xyz_dirs[0]}'):
-    #     for dirdir in xyz_dirs:
-    #         fileName = data_dir_GS+f"/{dirdir}/out_MF_{dirdir}"
-    #         eigenvalue_sum = find_line_val_dict(fileName, 'Eigenvalue sum:')
-    #         energies[dirdir] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
-    # elif f'out_Etot_{xyz_dirs[0]}' in os.listdir(data_dir_GS+f'/{xyz_dirs[0]}'):
-    #     for dirdir in xyz_dirs:
-    #         fileName = data_dir_GS+f"/{dirdir}/out_Etot_{dirdir}"
-    #         energies[dirdir] = get_energy_from_file(fileName)
-    # else:
-    #     print('no files for anisotropy')
-
-    # allKs = list()
-    # if 'z' in energies.keys():
-    #     if 'x' in energies.keys():
-    #         Kxz = (energies['x'] - energies['z'])/ucvA*2179874
-    #         allKs.append(Kxz)
-    #     if 'y' in energies.keys():    
-    #         Kyz = (energies['y'] - energies['z'])/ucvA*2179874
-    #         allKs.append(Kyz)
-
-    # K1_in_JPerCubibm = max(allKs) * 1e6            # anisotropy J/m³; MagnetocrystallineAnisotropyConstantK1
-    # return K1_in_JPerCubibm
-    return 0
+    K1_in_JPerCubibm = max(allKs) * 1e6            # anisotropy J/m³; MagnetocrystallineAnisotropyConstantK1
+    return K1_in_JPerCubibm
