@@ -1,4 +1,3 @@
-from importlib.resources import Package
 from typing import (
   TYPE_CHECKING,
 )
@@ -9,6 +8,7 @@ from nomad.datamodel.data import (
   EntryData,
 )
 from nomad.metainfo import (
+  Package,
   Quantity,
   Section,
   SubSection,
@@ -16,7 +16,6 @@ from nomad.metainfo import (
 
 if TYPE_CHECKING:
   pass
-
 
 m_package = Package(name='Schema for Mammos')
 m_package.__init_metainfo__()
