@@ -162,6 +162,7 @@ class GroundState(ArchiveSection):
     '''
     super().normalize(archive, logger)
 
+    logger.info(f'Normalising groundstate able?:{self.out_MF_x and self.out_MF_y and self.out_MF_z}, {self.out_MF_x} {self.out_MF_y} {self.out_MF_z}')
     energies = {}
     if self.out_MF_x and self.out_MF_y and self.out_MF_z:
       with archive.m_context.raw_file(self.out_MF_x) as file:
@@ -182,7 +183,9 @@ class GroundState(ArchiveSection):
       eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
       energies['z'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
 
+    logger.info(f'Normalising groundstate energies: {energies}')
     self.energies = energies
+    
 
 class UUData(EntryData, ArchiveSection):
   m_def = Section()
@@ -228,6 +231,7 @@ class UUData(EntryData, ArchiveSection):
 
       K1_in_JPerCubibm = self.compute_anisotropy_constant(ucvA, self.groundState.energies)
       print(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
+      logger.info(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
 
   def compute_anisotropy_constant(self, ucvA, energies):
     allKs = list()
