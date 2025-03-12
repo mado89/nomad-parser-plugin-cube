@@ -1,7 +1,7 @@
 import os
 
 from nomad.datamodel import EntryArchive
-from nomad.parsing import Parser
+from nomad.parsing import MatchingParser
 
 from cube.schema_packages.uu_schema import UUData, GroundState
 
@@ -230,7 +230,7 @@ def check_structure(
           return False
 
 
-class UUParser(Parser):
+class UUParser(MatchingParser):
     def is_mainfile(
         self,
         filename: str,
