@@ -3,13 +3,14 @@ import os
 from nomad.datamodel import EntryArchive
 from nomad.parsing import MatchingParser
 
-from cube.schema_packages.uu_schema import UUData, GroundState
+from cube.schema_packages.uu_schema import GroundState, UUData
+
 
 def check_readme_exists(folder_path, verbose='on'):
     readme_path = os.path.join(folder_path, 'README')
     if os.path.isfile(readme_path):
         if verbose in ['on', 'debug']:
-            print(f"File 'README' exists.")
+            print("File 'README' exists.")
         return True
     else:
         if verbose in ['on', 'debug']:
@@ -65,11 +66,11 @@ def check_structure_cif_file_exists(folder_path, verbose='on'):
     structure_file_path = os.path.join(folder_path, 'structure.cif')
     if os.path.isfile(structure_file_path):
         if verbose in ['on', 'debug']:
-            print(f"File 'structure.cif' exists.")
+            print("File 'structure.cif' exists.")
         return True
     else:
         if verbose in ['on', 'debug']:
-            print(f"File 'structure.cif' does not exist.")
+            print("File 'structure.cif' does not exist.")
         return False
 
 
@@ -213,14 +214,12 @@ def check_structure(
                   print("## Optional subfolders exist.")
                   if out_last_y_exists:
                       print("## Optional out_last_y file exists.")
-          else:
-              if optional_subfolders_exist == [False] * len(optional_subfolders_exist):
-                  if verbose in ['on', 'debug']:
-                      print("## Optional subfolders do not exist.")
-              else:
-                  if optional_subfolders_exist == [None] * len(optional_subfolders_exist):
-                      if verbose in ['on', 'debug']:
-                          print("## Optional subfolders are not checked.")
+          elif optional_subfolders_exist == [False] * len(optional_subfolders_exist):
+              if verbose in ['on', 'debug']:
+                  print("## Optional subfolders do not exist.")
+          elif optional_subfolders_exist == [None] * len(optional_subfolders_exist):
+              if verbose in ['on', 'debug']:
+                  print("## Optional subfolders are not checked.")
           if verbose in ['off', 'on', 'debug']:
               print("# All checks passed.")
           return True
@@ -231,37 +230,30 @@ def check_structure(
 
 
 class UUParser(MatchingParser):
-    def is_mainfile(
-        self,
-        filename: str,
-        mime: str,
-        buffer: bytes,
-        decoded_buffer: str,
-        compression: str = None,
-    ):
+  def is_mainfile(
+    self,
+    filename: str,
+    mime: str,
+    buffer: bytes,
+    decoded_buffer: str,
+    compression: str = None,
+  ):
         # print(f'filename {filename}, mime {mime}, buffer {buffer}, decoded_buffer {decoded_buffer}, compression {compression}')
         print(f'filename {filename}, mime {mime}, compression {compression}')
-        print(os.path.basename(filename))
-        print(os.path.dirname(filename))
 
         if os.path.basename(filename) != "structure.cif":
             return False
-        
+
         check = check_structure(os.path.dirname(filename), check_README=True, verbose='on')
 
         return check
 
-        if not check:
-            return False
-
-
-
-    def parse(
-        self,
-        mainfile: str,
-        archive: EntryArchive,
-        logger=None,
-        child_archives: dict[str, EntryArchive] = None,
+  def parse(
+      self,
+      mainfile: str,
+      archive: EntryArchive,
+      logger=None,
+      child_archives: dict[str, EntryArchive] = None,
     ) -> None:
         print(f'mainfile {mainfile}, archive {archive}, child_archives {child_archives}')
         logger.info('UUParser called')

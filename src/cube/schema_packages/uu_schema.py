@@ -1,9 +1,8 @@
+import os
 from typing import (
   TYPE_CHECKING,
 )
 
-import numpy as np
-import os
 from nomad.datamodel.data import (
   ArchiveSection,
   EntryData,
@@ -38,7 +37,7 @@ def find_line_val_dict(fileName, valname, verbose=False):
   if not os.path.isfile(fileName):
     raise FileNotFoundError(f"The file '{fileName}' does not exist.")
 
-  with open(fileName, 'rt') as f:
+  with open(fileName) as f:
     lines = f.read().splitlines()
 
   if verbose:
