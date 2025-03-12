@@ -14,7 +14,7 @@ from nomad.metainfo import (
   SubSection,
 )
 
-from MagneticMaterialsOntology import MagnetocrystallineAnisotropyConstantK1
+from MagneticMaterialsOntology.src.build_onto import MagnetocrystallineAnisotropyConstantK1
 
 if TYPE_CHECKING:
   from nomad.datamodel.datamodel import (
