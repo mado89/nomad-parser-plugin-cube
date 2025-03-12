@@ -333,6 +333,13 @@ Subclass of:
     section_def=LatticeConstantBeta,
     repeats = False,
   )
+  data_file = Quantity(
+    type=str,
+    description='A test.',
+    a_eln={
+        "component": "FileEditQuantity",
+    },
+  )
 
   def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
     '''
