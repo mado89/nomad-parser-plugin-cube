@@ -115,6 +115,7 @@ parser_entry_point = "cube.parsers:parser_entry_point"
 cube = "cube.schema_packages:cube"
 tmr = "cube.schema_packages:tmr"
 onto = "cube.schema_packages:onto"
+uu = "cube.schema_packages:uu"
 
 
 

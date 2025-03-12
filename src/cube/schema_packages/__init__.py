@@ -39,3 +39,16 @@ onto = OntoEntryPoint(
     name='Onto',
     description='Schema package for Mammos.',
 )
+
+class UUEntryPoint(SchemaPackageEntryPoint):
+
+    def load(self):
+        from cube.schema_packages.uu_schema import m_package
+
+        return m_package
+
+
+uu = UUEntryPoint(
+    name='uu',
+    description='Schema package for UU data.',
+)

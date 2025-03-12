@@ -46,6 +46,16 @@ def Angle():
       unit="rad",
   )
 
+def EnergyDensity():
+  return Quantity(
+      type=np.float64,
+      a_eln={
+          "component": "NumberEditQuantity",
+          "defaultDisplayUnit": "J/m**3"
+      },
+      unit="J/m**3",
+  )
+
 def Volume():
   return Quantity(
       type=np.float64,
@@ -55,6 +65,32 @@ def Volume():
       },
       unit="nm**3",
   )
+
+class MagnetocrystallineAnisotropyConstantK1(ArchiveSection):
+  """
+  IRI: https://w3id.org/emmo/domain/magnetic_material#EMMO_2bb87117-30f9-5b3a-b406-731836a3902f
+
+  elucidation: The magnetocrystalline constant K1 for tetragonal or hexagonal crystals.
+
+  altLabel: K1
+
+  comment: Ea = K1 sin^2(phi) + K2 sin^4(phi) where Ea is the is the anisotropy energy density and phi is the angle of the magnetization with respect to the c-axis of the crystal.
+
+  prefLabel: MagnetocrystallineAnisotropyConstantK1
+
+  wikipediaReference: https://en.wikipedia.org/wiki/Magnetocrystalline_anisotropy
+
+  Subclass of:
+
+      is_a EnergyDensity"""
+  m_def= Section(
+    a_eln=dict(
+      properties=dict(order=[
+        'k1'
+      ])
+    )
+  )
+  k1 = EnergyDensity()
 
 class LatticeConstantA(ArchiveSection):
   """
