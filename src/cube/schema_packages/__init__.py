@@ -26,3 +26,16 @@ tmr = TmrEntryPoint(
     name='B4Vex Simulation',
     description='Schema package for describing a B4Vex Simulation.',
 )
+
+class OntoEntryPoint(SchemaPackageEntryPoint):
+
+    def load(self):
+        from cube.schema_packages.mammos_ontology import m_package
+
+        return m_package
+
+
+onto = OntoEntryPoint(
+    name='Onto',
+    description='Schema package for Mammos.',
+)

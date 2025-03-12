@@ -1,3 +1,4 @@
+from importlib.resources import Package
 from typing import (
   TYPE_CHECKING,
 )
@@ -17,9 +18,8 @@ if TYPE_CHECKING:
   pass
 
 
-# m_package = Package(name='Schema for TMRB4Vex Simulation')
-# m_package.__init_metainfo__()
-
+m_package = Package(name='Schema for Mammos')
+m_package.__init_metainfo__()
 
 def Length():
   return Quantity(
