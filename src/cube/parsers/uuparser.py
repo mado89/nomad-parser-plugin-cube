@@ -292,6 +292,7 @@ class UUParser(MatchingParser):
 
         # entry = Cube(data_file=file)
         groundState = GroundState(out_MF_x=fx,out_MF_y=fy,out_MF_z=fz)
+        groundState.normalize(archive=archive,logger=logger)
         entry = UUData(groundState=groundState,out_last_file=fol)
 
         archive.data = entry
