@@ -167,7 +167,7 @@ class UUData(EntryData, ArchiveSection):
       K1_in_JPerCubibm = self.compute_anisotropy_constant(ucvA)
       print(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
 
-  def compute_anisotropy_constant(ucvA):
+  def compute_anisotropy_constant(self, ucvA):
     energies = {}
 
     # if f'out_MF_{xyz_dirs[0]}' in os.listdir(data_dir_GS+f'/{xyz_dirs[0]}'):
