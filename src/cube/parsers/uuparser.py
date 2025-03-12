@@ -290,7 +290,7 @@ class UUParser(MatchingParser):
         # fx = "GS/x/out_MF_x"
         # fy = "GS/y/out_MF_y"
         # fz = "GS/z/out_MF_z"
-        fol = f"{archiveData_dir_GS}/{xyz_dirs[0]}/out_last"
+        fol = f"{archiveData_dir_GS}{xyz_dirs[0]}/out_last"
 
         # entry = Cube(data_file=file)
         groundState = GroundState(out_MF_x=fx,out_MF_y=fy,out_MF_z=fz)
