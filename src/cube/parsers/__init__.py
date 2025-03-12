@@ -17,3 +17,16 @@ parser_entry_point = NewParserEntryPoint(
     description='New parser entry point configuration.',
     mainfile_name_re='.*dat',
 )
+
+
+class UUParserEntryPoint(ParserEntryPoint):
+  def load(self):
+    from cube.parsers.uuparser import UUParser
+
+    return UUParser(**self.dict())
+
+
+uuparser_entry_point = UUParserEntryPoint(
+  name='UUParser',
+  description='New parser entry point configuration.'
+)
