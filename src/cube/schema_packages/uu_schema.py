@@ -14,8 +14,8 @@ from nomad.metainfo import (
   Section,
   SubSection,
 )
+from nomad.units import ureg
 
-# from MagneticMaterialsOntology.src.build_onto import MagnetocrystallineAnisotropyConstantK1
 from .mammos_ontology import MagnetocrystallineAnisotropyConstantK1
 
 if TYPE_CHECKING:
@@ -232,6 +232,7 @@ class UUData(EntryData, ArchiveSection):
       K1_in_JPerCubibm = self.compute_anisotropy_constant(ucvA, self.groundState.energies)
       print(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
       logger.info(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
+      self.k1 = ureg.Quantity(K1_in_JPerCubibm, '"k-J/m**3')
 
   def compute_anisotropy_constant(self, ucvA, energies):
     allKs = list()
