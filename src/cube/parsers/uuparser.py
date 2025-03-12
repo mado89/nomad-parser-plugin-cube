@@ -268,9 +268,10 @@ class UUParser(MatchingParser):
 
         baseDir = os.path.dirname(mainfile)
         idx = baseDir.rfind('raw/')
-        baseDir = baseDir[idx + 4:]
+        archiveBaseDir = baseDir[idx + 4:]
 
         data_dir_GS = baseDir + "/GS/"
+        archiveData_dir_GS = archiveBaseDir + "/GS/"
         data_dir_MC = baseDir + "/MC"
 
         xyz_dirs = [dirdir for dirdir in os.listdir(data_dir_GS) if len(dirdir) == 1]
@@ -280,16 +281,16 @@ class UUParser(MatchingParser):
         print(xyz_dirs)
 
         # Reading file into lines; all folders are equivalent according to UU-colleagues, so we can use the first one
-        file_Name_Ms = data_dir_GS + f"{xyz_dirs[0]}/out_last"
+        file_Name_Ms = archiveBaseDir + "/GS/" + f"{xyz_dirs[0]}/out_last"
         print(file_Name_Ms)
 
-        fx = data_dir_GS + "x/out_MF_x"
-        fy = data_dir_GS + "y/out_MF_y"
-        fz = data_dir_GS + "z/out_MF_z"
+        fx = archiveData_dir_GS + "x/out_MF_x"
+        fy = archiveData_dir_GS + "y/out_MF_y"
+        fz = archiveData_dir_GS + "z/out_MF_z"
         # fx = "GS/x/out_MF_x"
         # fy = "GS/y/out_MF_y"
         # fz = "GS/z/out_MF_z"
-        fol = f"GS/{xyz_dirs[0]}/out_last"
+        fol = f"{archiveData_dir_GS}/{xyz_dirs[0]}/out_last"
 
         # entry = Cube(data_file=file)
         groundState = GroundState(out_MF_x=fx,out_MF_y=fy,out_MF_z=fz)
