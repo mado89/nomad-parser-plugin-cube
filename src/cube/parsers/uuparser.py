@@ -264,8 +264,11 @@ class UUParser(MatchingParser):
         child_archives: dict[str, EntryArchive] = None,
     ) -> None:
         print(f'mainfile {mainfile}, archive {archive}, child_archives {child_archives}')
+        logger.info('UUParser called')
 
         baseDir = os.path.dirname(mainfile)
+        idx = baseDir.rfind('raw/')
+        baseDir = baseDir[idx + 4:]
 
         data_dir_GS = baseDir + "/GS/"
         data_dir_MC = baseDir + "/MC"
@@ -277,18 +280,16 @@ class UUParser(MatchingParser):
         print(xyz_dirs)
 
         # Reading file into lines; all folders are equivalent according to UU-colleagues, so we can use the first one
-        file_Name_Ms = data_dir_GS + f"/{xyz_dirs[0]}/out_last"
+        file_Name_Ms = data_dir_GS + f"{xyz_dirs[0]}/out_last"
         print(file_Name_Ms)
 
         fx = data_dir_GS + "x/out_MF_x"
         fy = data_dir_GS + "y/out_MF_y"
         fz = data_dir_GS + "z/out_MF_z"
-        fx = "GS/x/out_MF_x"
-        fy = "GS/y/out_MF_y"
-        fz = "GS/z/out_MF_z"
+        # fx = "GS/x/out_MF_x"
+        # fy = "GS/y/out_MF_y"
+        # fz = "GS/z/out_MF_z"
         fol = f"GS/{xyz_dirs[0]}/out_last"
-        # print("Hello", file, mainfile, archive, child_archives)
-        logger.info('CubeParser called')
 
         # entry = Cube(data_file=file)
         groundState = GroundState(out_MF_x=fx,out_MF_y=fy,out_MF_z=fz)
