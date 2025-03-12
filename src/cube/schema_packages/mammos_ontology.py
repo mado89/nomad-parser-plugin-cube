@@ -8,6 +8,7 @@ from nomad.datamodel.data import (
   EntryData,
 )
 from nomad.metainfo import (
+  MSection,
   Package,
   Quantity,
   Section,
@@ -271,7 +272,7 @@ Subclass of:
       }
   )
 
-class CrystalStructure(EntryData, ArchiveSection):
+class CrystalStructure(MSection, EntryData, ArchiveSection):
   """
   CrystalStructure
 
