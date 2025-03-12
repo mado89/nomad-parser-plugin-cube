@@ -233,7 +233,7 @@ class UUData(EntryData, ArchiveSection):
       print(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
       logger.info(f'Anisotropy constant (max of all): {K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
       try:
-        self.k1 = ureg.Quantity(K1_in_JPerCubibm, '"J/m**3')
+        self.k1 = ureg.Quantity(K1_in_JPerCubibm, 'J/m**3')
       except Exception as e:
         print(e)
         logger.error(f'Exception {e}')
