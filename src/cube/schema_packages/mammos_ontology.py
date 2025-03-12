@@ -74,7 +74,9 @@ class MagnetocrystallineAnisotropyConstantK1(ArchiveSection):
 
   altLabel: K1
 
-  comment: Ea = K1 sin^2(phi) + K2 sin^4(phi) where Ea is the is the anisotropy energy density and phi is the angle of the magnetization with respect to the c-axis of the crystal.
+  comment: Ea = K1 sin^2(phi) + K2 sin^4(phi) where Ea is the is the anisotropy energy
+    density and phi is the angle of the magnetization with respect to the c-axis of
+    the crystal.
 
   prefLabel: MagnetocrystallineAnisotropyConstantK1
 
