@@ -28,5 +28,6 @@ class UUParserEntryPoint(ParserEntryPoint):
 
 uuparser_entry_point = UUParserEntryPoint(
   name='UUParser',
-  description='New parser entry point configuration.'
+  description='New parser entry point configuration.',
+  mainfile_name_re='.*cif',
 )

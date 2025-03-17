@@ -18,7 +18,7 @@ class UUParser(MatchingParser):
     print(f'filename {filename}, mime {mime}, compression {compression}')
 
     if os.path.basename(filename) != "structure.cif":
-        return False
+      return False
 
     self.dir = os.path.dirname(filename)
 
@@ -29,8 +29,7 @@ class UUParser(MatchingParser):
                         check_optional_subf=True,
                         check_README=False,
                         check_structure_cif=True,
-                        check_out_last_files=True,):
-    
+                        check_out_last_files=True):
     readme_exists = False
     mandatory_subfolders_exist = False
     structure_cif_exists = False
@@ -57,12 +56,12 @@ class UUParser(MatchingParser):
           mom_j_pos_file_exists = False
 
     if check_structure_cif:
-      structure_cif_exists = os.path.isfile(self.dir+'structure.cif')
+      structure_cif_exists = os.path.isfile(os.path.join(self.dir,'structure.cif'))
 
-    return_values = [readme_exists, mandatory_subfolders_exist,
+    return_values = [readme_exists or not check_README, mandatory_subfolders_exist,
                       structure_cif_exists, out_last_x_exists, out_last_z_exists,
                       mom_j_pos_file_exists]
-    
+
     return all(return_values)
 
   def check_subfolders_exist(self, check_optional_subf=True):
@@ -103,7 +102,10 @@ class UUParser(MatchingParser):
 
       baseDir = os.path.dirname(mainfile)
       idx = baseDir.rfind('raw/')
-      archiveBaseDir = baseDir[idx + 4:]
+      if idx == -1:
+        archiveBaseDir = baseDir
+      else:
+        archiveBaseDir = baseDir[idx + 4:]
 
       data_dir_GS = baseDir + "/GS/"
       archiveData_dir_GS = archiveBaseDir + "/GS/"
@@ -111,14 +113,13 @@ class UUParser(MatchingParser):
 
       xyz_dirs = [dirdir for dirdir in os.listdir(data_dir_GS) if len(dirdir) == 1]
 
-      print(data_dir_GS)
-      print(data_dir_MC)
-      print(xyz_dirs)
+      print(f'data_dir_GS {data_dir_GS} data_dir_MC {data_dir_MC}'
+             f' xyz_dirs {xyz_dirs} idx{idx}')
 
       # Reading file into lines; all folders are equivalent according to 
       # UU-colleagues, so we can use the first one
       file_Name_Ms = archiveBaseDir + "/GS/" + f"{xyz_dirs[0]}/out_last"
-      print(file_Name_Ms)
+      print(f'file_Name_Ms {file_Name_Ms}')
 
       fx = archiveData_dir_GS + "x/out_MF_x"
       fy = archiveData_dir_GS + "y/out_MF_y"
