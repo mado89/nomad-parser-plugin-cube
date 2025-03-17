@@ -51,7 +51,7 @@ def EnergyDensity():
       type=np.float64,
       a_eln={
           "component": "NumberEditQuantity",
-          "defaultDisplayUnit": "J/m**3"
+          "defaultDisplayUnit": "MJ/m**3"
       },
       unit="J/m**3",
   )
