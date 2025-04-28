@@ -121,14 +121,14 @@ class UUParser(MatchingParser):
       file_Name_Ms = archiveBaseDir + "/GS/" + f"{xyz_dirs[0]}/out_last"
       print(f'file_Name_Ms {file_Name_Ms}')
 
-      fx = archiveData_dir_GS + "x/out_MF_x"
-      fy = archiveData_dir_GS + "y/out_MF_y"
-      fz = archiveData_dir_GS + "z/out_MF_z"
+      fx = archiveData_dir_GS + "x/out_MF_x" if 'x' in xyz_dirs else None
+      fy = archiveData_dir_GS + "y/out_MF_y" if 'y' in xyz_dirs else None
+      fz = archiveData_dir_GS + "z/out_MF_z" if 'z' in xyz_dirs else None
       fol = f"{archiveData_dir_GS}{xyz_dirs[0]}/out_last"
 
       # entry = Cube(data_file=file)
       groundState = GroundState(out_MF_x=fx,out_MF_y=fy,out_MF_z=fz)
-      groundState.normalize(archive=archive,logger=logger)
+      # groundState.normalize(archive=archive,logger=logger)
       entry = UUData(groundState=groundState,out_last_file=fol)
 
       archive.data = entry

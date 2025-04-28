@@ -114,23 +114,33 @@ class GroundState(ArchiveSection):
             + f'{self.out_MF_x and self.out_MF_y and self.out_MF_z}, '
             + f'MF_x: {self.out_MF_x} MY_y: {self.out_MF_y} MF_z: {self.out_MF_z}'
         )
+        print(
+            'Can normalise groundstate?: '
+            + f'{self.out_MF_x and self.out_MF_y and self.out_MF_z}, '
+            + f'MF_x: {self.out_MF_x} MY_y: {self.out_MF_y} MF_z: {self.out_MF_z}'
+        )
         energies = {}
-        if self.out_MF_x and self.out_MF_y and self.out_MF_z:
-            if os.path.isfile(self.out_MF_x):
+
+        if self.out_MF_z:
+            if self.out_MF_x is not None:
                 with archive.m_context.raw_file(self.out_MF_x) as file:
                     lines = file.read().splitlines()
 
                 eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
                 energies['x'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+            else:
+                self.out_MF_x = None
 
-            if os.path.isfile(self.out_MF_y):
+            if self.out_MF_y is not None:
                 with archive.m_context.raw_file(self.out_MF_y) as file:
                     lines = file.read().splitlines()
 
                 eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
                 energies['y'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+            else:
+                self.out_MF_y = None
 
-            if os.path.isfile(self.out_MF_z):
+            if self.out_MF_z is not None:
                 with archive.m_context.raw_file(self.out_MF_z) as file:
                     lines = file.read().splitlines()
 
@@ -139,7 +149,6 @@ class GroundState(ArchiveSection):
 
         logger.info(f'Normalising groundstate energies: {energies}')
         self.energies = energies
-    
 
 class UUData(EntryData, ArchiveSection):
   m_def = Section()
@@ -192,12 +201,17 @@ class UUData(EntryData, ArchiveSection):
                   f'{K1_in_JPerCubibm} J/m\N{SUPERSCRIPT THREE}')
       try:
         self.k1 = MagnetocrystallineAnisotropyConstantK1()
-        self.k1.k1 = ureg.Quantity(float(K1_in_JPerCubibm), 'J/m**3')
+        self.k1.MagnetocrystallineAnisotropyConstantK1 = \
+            ureg.Quantity(float(K1_in_JPerCubibm), 'J/m**3')
+        print(f'K1 set to {self.k1.MagnetocrystallineAnisotropyConstantK1}')
       except Exception as e:
         print(e)
         logger.error(f'Exception {e}')
 
+    print(f'K1 set to {self.k1.MagnetocrystallineAnisotropyConstantK1}')
+
   def compute_anisotropy_constant(self, ucvA, energies):
+    print('Calculating anisotropy constant', ucvA, energies)
     allKs = list()
     if 'z' in energies.keys():
         if 'x' in energies.keys():

@@ -88,11 +88,16 @@ class MagnetocrystallineAnisotropyConstantK1(ArchiveSection):
   m_def= Section(
     a_eln=dict(
       properties=dict(order=[
-        'k1'
+        'MagnetocrystallineAnisotropyConstantK1'
       ])
     )
   )
-  k1 = EnergyDensity()
+  MagnetocrystallineAnisotropyConstantK1 = Quantity(type=np.float64,
+    a_eln={
+          "component": "NumberEditQuantity",
+          "defaultDisplayUnit": "MJ/m**3"
+    },
+    unit='kg/(m.s**2)')
 
 class LatticeConstantA(ArchiveSection):
   """
