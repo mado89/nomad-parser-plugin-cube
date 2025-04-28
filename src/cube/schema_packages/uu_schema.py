@@ -1,3 +1,4 @@
+import os
 from typing import (
   TYPE_CHECKING,
 )
@@ -74,65 +75,70 @@ def lastThingy(lines, valname,verbose=False):
   return last_lines_with_valname
 
 class GroundState(ArchiveSection):
-  m_def = Section()
-  out_MF_x = Quantity(
-    type=str,
-    description='The \'out_MF_x\' file.',
-    a_eln={
-        "component": "FileEditQuantity",
-    },
-  )
-  out_MF_y = Quantity(
-    type=str,
-    description='The \'out_MF_y\' file.',
-    a_eln={
-        "component": "FileEditQuantity",
-    },
-  )
-  out_MF_z = Quantity(
-    type=str,
-    description='The \'out_MF_z\' file.',
-    a_eln={
-        "component": "FileEditQuantity",
-    },
-  )
+    m_def = Section()
+    out_MF_x = Quantity(
+        type=str,
+        description="The 'out_MF_x' file.",
+        a_eln={
+            'component': 'FileEditQuantity',
+        },
+    )
+    out_MF_y = Quantity(
+        type=str,
+        description="The 'out_MF_y' file.",
+        a_eln={
+            'component': 'FileEditQuantity',
+        },
+    )
+    out_MF_z = Quantity(
+        type=str,
+        description="The 'out_MF_z' file.",
+        a_eln={
+            'component': 'FileEditQuantity',
+        },
+    )
 
-  def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
-    '''
-    The normalizer for the `UU data`.
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        """
+        The normalizer for the `UU data`.
 
-    Args:
-        archive (EntryArchive): The archive containing the section that is being
-        normalized.
-        logger (BoundLogger): A structlog logger.
-    '''
-    super().normalize(archive, logger)
+        Args:
+            archive (EntryArchive): The archive containing the section that is being
+            normalized.
+            logger (BoundLogger): A structlog logger.
+        """
+        super().normalize(archive, logger)
 
-    logger.info('Normalising groundstate able?:' + 
-                f'{self.out_MF_x and self.out_MF_y and self.out_MF_z}, ' + 
-                f'{self.out_MF_x} {self.out_MF_y} {self.out_MF_z}')
-    energies = {}
-    if self.out_MF_x and self.out_MF_y and self.out_MF_z:
-      with archive.m_context.raw_file(self.out_MF_x) as file:
-        lines = file.read().splitlines()
+        logger.info(
+            'Can normalise groundstate?: '
+            + f'{self.out_MF_x and self.out_MF_y and self.out_MF_z}, '
+            + f'MF_x: {self.out_MF_x} MY_y: {self.out_MF_y} MF_z: {self.out_MF_z}'
+        )
+        energies = {}
+        if self.out_MF_x and self.out_MF_y and self.out_MF_z:
+            if os.path.isfile(self.out_MF_x):
+                with archive.m_context.raw_file(self.out_MF_x) as file:
+                    lines = file.read().splitlines()
 
-      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
-      energies['x'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+                eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+                energies['x'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
 
-      with archive.m_context.raw_file(self.out_MF_y) as file:
-        lines = file.read().splitlines()
+            if os.path.isfile(self.out_MF_y):
+                with archive.m_context.raw_file(self.out_MF_y) as file:
+                    lines = file.read().splitlines()
 
-      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
-      energies['y'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+                eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+                energies['y'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
 
-      with archive.m_context.raw_file(self.out_MF_z) as file:
-        lines = file.read().splitlines()
+            if os.path.isfile(self.out_MF_z):
+                with archive.m_context.raw_file(self.out_MF_z) as file:
+                    lines = file.read().splitlines()
 
-      eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
-      energies['z'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
+                eigenvalue_sum = lastThingy(lines, 'Eigenvalue sum:')
+                energies['z'] = eigenvalue_sum[list(eigenvalue_sum.keys())[0]][0]
 
-    logger.info(f'Normalising groundstate energies: {energies}')
-    self.energies = energies
+        logger.info(f'Normalising groundstate energies: {energies}')
+        self.energies = energies
     
 
 class UUData(EntryData, ArchiveSection):
