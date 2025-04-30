@@ -1,9 +1,8 @@
 import os
 
+from cube.schema_packages.uu_schema import GroundState, UUData
 from nomad.datamodel import EntryArchive
 from nomad.parsing import MatchingParser
-
-from cube.schema_packages.uu_schema import GroundState, UUData
 
 
 class UUParser(MatchingParser):
