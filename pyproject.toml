@@ -13,8 +13,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
 ]
-name = "cube"
-description = "Plugin for cube files"
+name = "mammos"
+description = "Nomad plugin for mammos"
 version = "0.0.1"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -111,12 +111,12 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [project.entry-points.'nomad.plugin']
-parser_entry_point = "cube.parsers:parser_entry_point"
-uuparser_entry_point = "cube.parsers:uuparser_entry_point"
-cube = "cube.schema_packages:cube"
-tmr = "cube.schema_packages:tmr"
-onto = "cube.schema_packages:onto"
-uu = "cube.schema_packages:uu"
+parser_entry_point = "mammos.parsers:parser_entry_point"
+uuparser_entry_point = "mammos.parsers:uuparser_entry_point"
+cube = "mammos.schema_packages:cube"
+tmr = "mammos.schema_packages:tmr"
+onto = "mammos.schema_packages:onto"
+uu = "mammos.schema_packages:uu"
 
 
 
