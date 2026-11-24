@@ -1,0 +1,11 @@
+diff a/pyproject.toml b/pyproject.toml	(rejected hunks)
+@@ -113,8 +132,7 @@ where = ["src"]
+ [project.entry-points.'nomad.plugin']
+ parser_entry_point = "cube.parsers:parser_entry_point"
+ schema_package_entry_point = "cube.schema_packages:schema_package_entry_point"
+-
+-
++action_entry_point = "cube.actions:simple_action_entry_point"
+ 
+ [tool.cruft]
+ # Avoid updating workflow files, this leads to permissions issues
